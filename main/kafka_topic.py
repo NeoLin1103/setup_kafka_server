@@ -13,8 +13,8 @@ print(admin_client.list_topics())
 
 # print('New topic created: example_topic')
 
-admin_client.delete_topics(topics=['example_topic'])
+# admin_client.delete_topics(topics=['example_topic'])
 
-print('Topic deleted: example_topic')
+# print('Topic deleted: example_topic')
 
-print(admin_client.list_topics())
+# print(admin_client.list_topics())

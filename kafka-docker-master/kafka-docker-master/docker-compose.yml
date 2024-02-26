@@ -2,18 +2,48 @@ version: '2'
 services:
   zookeeper:
     image: wurstmeister/zookeeper
+    networks:
+      - kafka-network
     ports:
       - "2181:2181"
     restart: unless-stopped
 
-  kafka:
+  kafka1:
     build: .
+    container_name: kafka1
+    networks:
+      - kafka-network
+    depends_on:
+      - zookeeper
     ports:
       - "9092:9092"
     environment:
-      DOCKER_API_VERSION: 1.22
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      # DOCKER_API_VERSION: 1.22
+      # KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      BROKER_ID: 1
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+
+  kafka2:
+    build: .
+    container_name: kafka2
+    networks:
+      - kafka-network
+    depends_on:
+      - zookeeper
+    ports:
+      - "9093:9092"
+    environment:
+      # DOCKER_API_VERSION: 1.22
+      # KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      BROKER_ID: 2
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+networks:
+    kafka-network:
+       driver: bridge
